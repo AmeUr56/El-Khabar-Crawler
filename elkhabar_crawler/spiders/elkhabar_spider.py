@@ -20,7 +20,10 @@ class ElkhabarSpiderSpider(scrapy.Spider):
         
         # Get next page url
         current_page_url = page.xpath("div[@class='row'][2]").xpath(".//a[@class='active']/@href").get()
-        next_page_url = current_page_url[:-1] + str(int(current_page_url[-1])+1)
+        page_number = current_page_url.split('page=')[-1]  # Extract the current page number
+        next_page_number = int(page_number) + 1
+        next_page_url = current_page_url.replace(f'page={page_number}', f'page={next_page_number}')
+
         # Traverse to next page after parsing current page's articles 
         yield scrapy.Request(response.urljoin(next_page_url),callback=self.parse)
         
