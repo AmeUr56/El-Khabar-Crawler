@@ -22,7 +22,7 @@ class ElkhabarSpiderSpider(scrapy.Spider):
         current_page_url = page.xpath("div[@class='row'][2]").xpath(".//a[@class='active']/@href").get()
         next_page_url = current_page_url[:-1] + str(int(current_page_url[-1])+1)
         # Traverse to next page after parsing current page's articles 
-        #yield scrapy.Request(response.urljoin(next_page_url),callback=self.parse)
+        yield scrapy.Request(response.urljoin(next_page_url),callback=self.parse)
         
     def parse_article(self,response):
         article_item = ArticleItem()
